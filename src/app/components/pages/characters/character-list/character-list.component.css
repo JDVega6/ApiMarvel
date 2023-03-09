@@ -1,0 +1,102 @@
+.main-container{
+    width: 100%;
+}
+/* Title */
+.container-flex{
+    display: flex;
+}
+.title{
+    margin-left: 0px;
+    font-weight: 700;
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 25px;
+}
+
+.title-container{
+    display: inline-block;
+    margin-right: auto;
+}
+
+/* card */
+.container {
+    display: inline-block;
+    width: 430px;
+    margin-right: 50px;
+}
+.container .card {
+    height : 300px;  
+    background-color : #f9f9f9;
+    margin : 30px 10px;
+    padding : 20px 15px;
+    width : 430px;
+    box-shadow : 0 1px 2px rgba(238, 234, 234, 0.1);
+    border:none;
+    border-radius: 0px;
+}
+.container .card .image{
+    margin: 5px 0px 0px -30px;
+}
+.container .card .image img {
+    border-radius : 50%;
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+}
+
+.description{
+    margin-left: 20px;
+}
+
+.description h5{
+font-family: fantasy;
+font-weight: 300;
+color: rgb(48, 22, 22);
+}
+
+.description p{
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+    font-size: 13px;
+    text-align: justify;
+
+}
+
+.description .btn{
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+    position: absolute;
+    top: 6.2em;
+
+}
+
+.content-card{
+    display: flex;
+    width: 100%;
+    margin-top: -35px;
+    
+}
+
+.comics{
+    width: auto;
+}
+.comics h3{
+    font-size: 20px;
+    color: #5a5858;
+}
+
+.comic-name{
+    text-justify: auto;
+    font-family: Arial; 
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0; border: none; background: none;
+    text-align: left;
+}
+.comic-name:hover{
+    color: #db1515;
+}
+
+.column {
+    float: left;
+    width: 50%;
+    padding: 2px 5px;
+}
