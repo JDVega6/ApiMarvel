@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { CharacterListComponent } from '@characters/character-list/character-list.component';
 import { FavouritesComponent } from './favourites/favourites.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CharacterDetailsComponent } from './character-details/character-details.component';
 
 
 
 
-const myComponents=[CharacterListComponent, FavouritesComponent];
+const myComponents=[CharacterListComponent, FavouritesComponent, CharacterDetailsComponent];
 
 @NgModule({
   declarations: [...myComponents],

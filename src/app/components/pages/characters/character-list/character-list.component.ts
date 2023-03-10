@@ -4,22 +4,39 @@ import { Character } from '@app/shared/interfaces/character.interface';
 import { CharacterService } from '@app/shared/services/character.service';
 import { PaginationInstance } from 'ngx-pagination';
 import { Observable, take } from 'rxjs';
+import { trigger, style,transition, animate, state } from '@angular/animations';
 
 @Component({
   selector: 'app-character-list',
   templateUrl: './character-list.component.html',
-  styleUrls: ['./character-list.component.css']
+  styleUrls: ['./character-list.component.css'],
+  animations: [
+    trigger('enterState',[
+      state('void',style({
+        transform: 'translateX(-100%)',
+        opacity:0.5
+      })),
+      transition(':enter',[
+        animate(300,style({
+          transform:'translateX(0%)',
+          opacity:0.5
+        }))
+      ])
+    ])
+  ]
 })
 export class CharacterListComponent {
 
   title='Characters';
   
-  constructor(private characterSvc: CharacterService, private router: ActivatedRoute){}
+  constructor(private characterSvc: CharacterService, private router: ActivatedRoute ){}
 
   characters?:Observable<any>;
 
   ngOnInit(){
     this.loadCharactersList();
+    this.favourites = this.getLocalStorage();
+    this.characterSvc.setFavourite(this.favourites);
   }
 
   private query : string = '';
@@ -30,7 +47,7 @@ export class CharacterListComponent {
   //Comic Modal
   comic:any;
   btnImgAdd='';
-  btncolAdd: boolean = false;
+  switchAdd: boolean = false;
   favourites: any=[];
   titlebutton ='';
   closeResult = '';
@@ -52,9 +69,8 @@ export class CharacterListComponent {
   }
  
   getAllCharacters(){
-    this.characters =  this.characterSvc.searchCharacters(this.query);
+    this.characters =  this.characterSvc.searchCharacters(this.query);    
   }
-  
 
   public orderAs_A_Z(){
     this.characters =  this.characterSvc.searchCharacters(this.query, 'name');
@@ -81,6 +97,7 @@ export class CharacterListComponent {
       text != undefined  ? text : "Description Not Found" ;
   }
 
+  // Comics
   comicArrays(character:any): any[]{
     let listComics: any[] = [];
     let comics = character.comics?.items;
@@ -106,6 +123,77 @@ export class CharacterListComponent {
 
   nameComic(text:String){
     return text != undefined  ? text : "Comics No found "; 
+  }
+
+  modalComic(urlComic: string){
+    this.characterSvc.getComicDetailsByUrl(urlComic) 
+    .pipe(take(1))
+    .subscribe((res: any) =>{
+      this.comic= Object.values(res.data.results);
+      this.comic = this.comic[0];
+      console.log(this.comic)
+      this.switchAdd=false;
+      this.btnImgAdd="assets/btn-favourites-default.png";
+      this.titlebutton="ADD TO FAVOURITES"
+      for(let element of this.favourites)
+      {
+        if (element.id == this.comic[0].id)
+        {
+          this.switchAdd=true;
+          this.btnImgAdd="assets/btn-favourites-primary.png";
+          this.titlebutton="ADDED TO FAVOURITES"
+          break;
+        }
+      } 
+ 
+    })
+  }
+  DescriptionComic(text:String){
+    return  text != null  ?  text.slice(0,200) + "..." : text;
+  }
+
+  addFavorites(){
+    this.switchAdd=!this.switchAdd;
+    if(this.switchAdd){
+      this.btnImgAdd="assets/btn-favourites-primary.png";
+      this.titlebutton="ADDED TO FAVOURITES";
+      this.favourites.push(this.comic);
+      this.characterSvc.setFavourite(this.favourites);
+      
+    } else{
+      this.btnImgAdd="assets/btn-favourites-default.png";
+      this.titlebutton="ADD TO FAVOURITES";
+      var cont:number=0;
+      var index:number=-1;
+      for(let element of this.favourites)
+      {
+        if(element.id==this.comic.id)
+        {
+          index=cont;
+          break;
+        }
+        cont=cont+1;
+      }
+      if(index>-1)
+      {
+        this.favourites.splice(index,1)
+        
+      }
+    }
+    this.saveLocalStorage(this.favourites);
+    this.getLocalStorage();
+  }
+
+  saveLocalStorage(fav :any){
+    sessionStorage.setItem('favourites', JSON.stringify (fav))
+  }
+
+  getLocalStorage(){
+    var favouritesArray : any=[];
+    favouritesArray=sessionStorage.getItem('favourites');
+    if (favouritesArray==null || favouritesArray.length==0)
+      return [];
+    return JSON.parse(favouritesArray);
   }
 
 }

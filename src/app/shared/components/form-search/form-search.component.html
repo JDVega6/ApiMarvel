@@ -2,8 +2,8 @@
     <input
         #inputSearch
         type="search"
+        (keyup)="search(inputSearch.value)"
         class="form-control-lg"
         placeholder="Search character"
     />
-    <button type="submit" (click)="search(inputSearch.value)">Search</button>
 </form>

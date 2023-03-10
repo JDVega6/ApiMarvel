@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CharacterListRoutingModule } from './character-list-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -14,7 +14,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
   imports: [
     CommonModule,
     CharacterListRoutingModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    BrowserAnimationsModule
   ],
   exports: [
     
